@@ -13,11 +13,11 @@ function flipCard() {
 
     if (!hasFlippedCard) {
         // first click
-        hasFlippedCard = true
+        hasFlippedCard = true;
         firstCard = this;
         return;
     }
-    //second click
+    // second click
     hasFlippedCard = false;
     secondCard = this;
 
@@ -44,12 +44,12 @@ function disableCards() {
 
 function unflipCards() {
     // no match
-    lockBoard = true
+    lockBoard = true;
     setTimeout(() => {
         firstCard.classList.remove('flip');
         secondCard.classList.remove('flip');
-resetBoard();
-    }, 1000);
+        resetBoard();
+    }, 500);
 }
 
 
@@ -58,12 +58,26 @@ function resetBoard(){
     [firstCard, secondCard] = [null, null];
 }
 
-(function shuffle(){
+function shuffle(){
     cards.forEach(card => {
         let randomPos = Math.floor(Math.random() * 12);
         card.style.order = randomPos;
     });
-})();
+};
+shuffle();
+
+var newGameButton = document.getElementById("new-game-button");
+
+newGameButton.addEventListener("click", function(e) {
+    e.preventDefault();
+    cards.forEach(card => {
+        card.classList.remove("flip");
+        card.addEventListener("click", flipCard);
+    })
+    firstCard = secondCard = null;
+    hasFlippedCard = lockBoard = false;
+    shuffle();
+});
 
 
 cards.forEach(card => card.addEventListener('click', flipCard))
